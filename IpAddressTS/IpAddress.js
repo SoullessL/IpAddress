@@ -24,6 +24,22 @@ define(["require", "exports"], function (require, exports) {
         add(singleIp) {
             this.ipList.push(singleIp);
         }
+        remove(index) {
+            this.ipList.splice(index, 0);
+        }
+        edit(index, editIp) {
+            if (this.ipList.length < index) {
+                throw new Error("Can not find the special ip address.");
+            }
+            else {
+                this.copyIpAddress(editIp, this.ipList[index]);
+            }
+        }
+        copyIpAddress(orgIp, targetIp) {
+            targetIp.name = orgIp.name;
+            targetIp.startIp = orgIp.startIp;
+            targetIp.endIp = orgIp.endIp;
+        }
     }
 });
 //# sourceMappingURL=IpAddress.js.map
