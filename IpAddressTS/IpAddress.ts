@@ -34,7 +34,7 @@ export class IpOperation {
     addAndDraw(singleIp: IpAddress) {
         console.log("This is addAndDraw.");
         this.add(singleIp);
-        this.drawTable();
+        this.drawTable(this);
     }
 
     remove(index: number) {
@@ -44,7 +44,7 @@ export class IpOperation {
     removeAndDraw(index: number) {
         console.log("This is removeAndDraw.");
         this.remove(index);
-        this.drawTable();
+        this.drawTable(this);
     }
 
     edit(index: number, editIp: IpAddress) {
@@ -62,7 +62,7 @@ export class IpOperation {
         targetIp.endIp = orgIp.endIp;
     }
 
-    drawTable(): string {
+    drawTable(ips: IpOperation): string {
         console.log(this.ipList.length);
         let tableStr: string = '';
         tableStr += '<table class="table table-bordered"><tr><td>Name</td><td>Start IP</td><td>End IP</td><td></td></tr>';
@@ -76,16 +76,23 @@ export class IpOperation {
             tableStr += '<td>' + this.ipList[i].startIp + '</td>';
             tableStr += '<td>' + this.ipList[i].endIp + '</td>';
             tableStr += '<td class="col-md-2"><input type="button" class="btn btn-sm btn-primary" value="Edit" />&nbsp';
-            tableStr += '<input type="button" class="btn btn-sm btn-primary" value= "Delete" onclick="deleteIp(' + this + ', ' + parseInt(i) + ')" /></td>';
+            tableStr += '<input type="button" class="btn btn-sm btn-primary" id="btnDel' + i + '" value= "Delete" /></td>';
             tableStr += '</tr>';
         }
         tableStr += '</table>';
         console.log(tableStr);
         this.ipHtml.html(tableStr);
+
+        //Add click function after render html        
+        for (let i in this.ipList) {
+            $('#btnDel' + i).on('click', function () {
+                ips.removeAndDraw(parseInt(i));
+            });
+        }
         return tableStr;
     }
 }
 
-function deleteIp(ipo: IpOperation, deleteIndex: number) {
+export function deleteIp(ipo: IpOperation, deleteIndex: number) {
     ipo.removeAndDraw(deleteIndex);
 }

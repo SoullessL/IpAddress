@@ -28,7 +28,7 @@ define(["require", "exports"], function (require, exports) {
         addAndDraw(singleIp) {
             console.log("This is addAndDraw.");
             this.add(singleIp);
-            this.drawTable();
+            this.drawTable(this);
         }
         remove(index) {
             this.ipList.splice(index, 1);
@@ -36,7 +36,7 @@ define(["require", "exports"], function (require, exports) {
         removeAndDraw(index) {
             console.log("This is removeAndDraw.");
             this.remove(index);
-            this.drawTable();
+            this.drawTable(this);
         }
         edit(index, editIp) {
             if (this.ipList.length < index) {
@@ -51,7 +51,7 @@ define(["require", "exports"], function (require, exports) {
             targetIp.startIp = orgIp.startIp;
             targetIp.endIp = orgIp.endIp;
         }
-        drawTable() {
+        drawTable(ips) {
             console.log(this.ipList.length);
             let tableStr = '';
             tableStr += '<table class="table table-bordered"><tr><td>Name</td><td>Start IP</td><td>End IP</td><td></td></tr>';
@@ -65,12 +65,18 @@ define(["require", "exports"], function (require, exports) {
                 tableStr += '<td>' + this.ipList[i].startIp + '</td>';
                 tableStr += '<td>' + this.ipList[i].endIp + '</td>';
                 tableStr += '<td class="col-md-2"><input type="button" class="btn btn-sm btn-primary" value="Edit" />&nbsp';
-                tableStr += '<input type="button" class="btn btn-sm btn-primary" value= "Delete" onclick="deleteIp(' + this + ', ' + parseInt(i) + ')" /></td>';
+                tableStr += '<input type="button" class="btn btn-sm btn-primary" id="btnDel' + i + '" value= "Delete" /></td>';
                 tableStr += '</tr>';
             }
             tableStr += '</table>';
             console.log(tableStr);
             this.ipHtml.html(tableStr);
+            //Add click function after render html        
+            for (let i in this.ipList) {
+                $('#btnDel' + i).on('click', function () {
+                    ips.removeAndDraw(parseInt(i));
+                });
+            }
             return tableStr;
         }
     }
@@ -78,5 +84,6 @@ define(["require", "exports"], function (require, exports) {
     function deleteIp(ipo, deleteIndex) {
         ipo.removeAndDraw(deleteIndex);
     }
+    exports.deleteIp = deleteIp;
 });
 //# sourceMappingURL=IpAddress.js.map
