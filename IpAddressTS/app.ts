@@ -1,31 +1,7 @@
-﻿import { IpAddress } from "./IpAddress";
+﻿/// <reference path="jquery.d.ts" />
+import juqery = require('jquery');
+import { IpAddress, IpOperation } from "./IpAddress";
 
-class Greeter {
-    element: HTMLElement;
-    span: HTMLElement;
-    timerToken: number;
-
-    constructor(element: HTMLElement) {
-        this.element = element;
-        this.element.innerHTML += "The time is: ";
-        this.span = document.createElement('span');
-        this.element.appendChild(this.span);
-        this.span.innerText = new Date().toUTCString();
-    }
-
-    start() {
-        this.timerToken = setInterval(() => this.span.innerHTML = new Date().toUTCString(), 500);
-    }
-
-    stop() {
-        clearTimeout(this.timerToken);
-    }
-
-}
-
-
-var el = document.getElementById('content');
-var greeter = new Greeter(el);
-greeter.start();
-let testip: IpAddress = new IpAddress("test", "1.1.1.1", "1.1.1.1");
-testip.ShowIp();
+let ips: IpOperation = new IpOperation();
+ips.add(new IpAddress("test", "1.1.1.1", "1.1.1.1"));
+$('#ips').html(ips.drawTable());

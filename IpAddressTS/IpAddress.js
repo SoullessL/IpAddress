@@ -40,6 +40,24 @@ define(["require", "exports"], function (require, exports) {
             targetIp.startIp = orgIp.startIp;
             targetIp.endIp = orgIp.endIp;
         }
+        drawTable() {
+            let tableStr = '';
+            tableStr += '<table class="table table-bordered"><tr><td>Name</td><td>Start IP</td><td>End IP</td><td></td></tr>';
+            for (let i in this.ipList) {
+                //let thisIpName = 'thisIpName' + i;
+                //let thisStartIp = 'thisStartIp' + i;
+                //let thisEndIp = 'thisEndIp' + i;
+                tableStr += '<tr>';
+                tableStr += '<td>' + this.ipList[i].name + '</td>';
+                tableStr += '<td>' + this.ipList[i].startIp + '</td>';
+                tableStr += '<td>' + this.ipList[i].endIp + '</td>';
+                tableStr += '<td class="col-md-2"><input type="button" class="btn btn-sm btn-primary" value="Save" />&nbsp<input type="button" class="btn btn-sm btn-primary" value="Edit" /></td>';
+                tableStr += '</tr>';
+            }
+            tableStr += '</table>';
+            return tableStr;
+        }
     }
+    exports.IpOperation = IpOperation;
 });
 //# sourceMappingURL=IpAddress.js.map
