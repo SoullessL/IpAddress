@@ -21,13 +21,30 @@
 
 export class IpOperation {
     ipList: Array<IpAddress> = new Array<IpAddress>();
+    ipHtml: JQuery;
+
+    constructor(htmlEle: JQuery) {
+        this.ipHtml = htmlEle;
+    }
 
     add(singleIp: IpAddress) {
         this.ipList.push(singleIp);
     }
 
+    addAndDraw(singleIp: IpAddress) {
+        console.log("This is addAndDraw.");
+        this.add(singleIp);
+        this.drawTable();
+    }
+
     remove(index: number) {
-        this.ipList.splice(index, 0);
+        this.ipList.splice(index, 1);
+    }
+
+    removeAndDraw(index: number) {
+        console.log("This is removeAndDraw.");
+        this.remove(index);
+        this.drawTable();
     }
 
     edit(index: number, editIp: IpAddress) {
@@ -46,20 +63,29 @@ export class IpOperation {
     }
 
     drawTable(): string {
+        console.log(this.ipList.length);
         let tableStr: string = '';
         tableStr += '<table class="table table-bordered"><tr><td>Name</td><td>Start IP</td><td>End IP</td><td></td></tr>';
         for (let i in this.ipList) {
             //let thisIpName = 'thisIpName' + i;
             //let thisStartIp = 'thisStartIp' + i;
             //let thisEndIp = 'thisEndIp' + i;
+            console.log("This is ip list" + i);
             tableStr += '<tr>';
             tableStr += '<td>' + this.ipList[i].name + '</td>';
             tableStr += '<td>' + this.ipList[i].startIp + '</td>';
             tableStr += '<td>' + this.ipList[i].endIp + '</td>';
-            tableStr += '<td class="col-md-2"><input type="button" class="btn btn-sm btn-primary" value="Save" />&nbsp<input type="button" class="btn btn-sm btn-primary" value="Edit" /></td>';
+            tableStr += '<td class="col-md-2"><input type="button" class="btn btn-sm btn-primary" value="Edit" />&nbsp';
+            tableStr += '<input type="button" class="btn btn-sm btn-primary" value= "Delete" onclick="deleteIp(' + this + ', ' + parseInt(i) + ')" /></td>';
             tableStr += '</tr>';
         }
         tableStr += '</table>';
+        console.log(tableStr);
+        this.ipHtml.html(tableStr);
         return tableStr;
     }
+}
+
+function deleteIp(ipo: IpOperation, deleteIndex: number) {
+    ipo.removeAndDraw(deleteIndex);
 }

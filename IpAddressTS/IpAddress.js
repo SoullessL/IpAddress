@@ -18,14 +18,25 @@ define(["require", "exports"], function (require, exports) {
     IpAddress.ipRegex = new RegExp("^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$");
     exports.IpAddress = IpAddress;
     class IpOperation {
-        constructor() {
+        constructor(htmlEle) {
             this.ipList = new Array();
+            this.ipHtml = htmlEle;
         }
         add(singleIp) {
             this.ipList.push(singleIp);
         }
+        addAndDraw(singleIp) {
+            console.log("This is addAndDraw.");
+            this.add(singleIp);
+            this.drawTable();
+        }
         remove(index) {
-            this.ipList.splice(index, 0);
+            this.ipList.splice(index, 1);
+        }
+        removeAndDraw(index) {
+            console.log("This is removeAndDraw.");
+            this.remove(index);
+            this.drawTable();
         }
         edit(index, editIp) {
             if (this.ipList.length < index) {
@@ -41,23 +52,31 @@ define(["require", "exports"], function (require, exports) {
             targetIp.endIp = orgIp.endIp;
         }
         drawTable() {
+            console.log(this.ipList.length);
             let tableStr = '';
             tableStr += '<table class="table table-bordered"><tr><td>Name</td><td>Start IP</td><td>End IP</td><td></td></tr>';
             for (let i in this.ipList) {
                 //let thisIpName = 'thisIpName' + i;
                 //let thisStartIp = 'thisStartIp' + i;
                 //let thisEndIp = 'thisEndIp' + i;
+                console.log("This is ip list" + i);
                 tableStr += '<tr>';
                 tableStr += '<td>' + this.ipList[i].name + '</td>';
                 tableStr += '<td>' + this.ipList[i].startIp + '</td>';
                 tableStr += '<td>' + this.ipList[i].endIp + '</td>';
-                tableStr += '<td class="col-md-2"><input type="button" class="btn btn-sm btn-primary" value="Save" />&nbsp<input type="button" class="btn btn-sm btn-primary" value="Edit" /></td>';
+                tableStr += '<td class="col-md-2"><input type="button" class="btn btn-sm btn-primary" value="Edit" />&nbsp';
+                tableStr += '<input type="button" class="btn btn-sm btn-primary" value= "Delete" onclick="deleteIp(' + this + ', ' + parseInt(i) + ')" /></td>';
                 tableStr += '</tr>';
             }
             tableStr += '</table>';
+            console.log(tableStr);
+            this.ipHtml.html(tableStr);
             return tableStr;
         }
     }
     exports.IpOperation = IpOperation;
+    function deleteIp(ipo, deleteIndex) {
+        ipo.removeAndDraw(deleteIndex);
+    }
 });
 //# sourceMappingURL=IpAddress.js.map
