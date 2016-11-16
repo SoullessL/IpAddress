@@ -3,11 +3,11 @@ Ip Address plugin
 
 ##How to use:
 ###1.Add jquery, bootstrap and requirejs link.
-  <link rel="stylesheet" href="app.css" type="text/css" />
-  <link href="Content/bootstrap.css" rel="stylesheet" />
-  <script src="Scripts/jquery-3.1.1.js"></script>
-  <script src="Scripts/bootstrap.js"></script>
-  <script data-main="app" type="text/javascript" src="require.js"></script>
+    <link rel="stylesheet" href="app.css" type="text/css" />
+<link href="Content/bootstrap.css" rel="stylesheet" />
+<script src="Scripts/jquery-3.1.1.js"></script>
+<script src="Scripts/bootstrap.js"></script>
+<script data-main="app" type="text/javascript" src="require.js"></script>
 
 ###2.Add an div in the page
         <div id="ips">
