@@ -32,7 +32,6 @@ export class IpOperation {
     }
 
     addAndDraw(singleIp: IpAddress) {
-        console.log("This is addAndDraw.");
         this.add(singleIp);
         this.drawTable(this);
     }
@@ -42,7 +41,6 @@ export class IpOperation {
     }
 
     removeAndDraw(index: number) {
-        console.log("This is removeAndDraw.");
         this.remove(index);
         this.drawTable(this);
     }
@@ -56,29 +54,46 @@ export class IpOperation {
         }
     }
 
+    editAndDraw(index: number, editIp: IpAddress) {
+        this.edit(index, editIp);
+        this.drawTable(this);
+    }
+
     copyIpAddress(orgIp: IpAddress, targetIp: IpAddress) {
         targetIp.name = orgIp.name;
         targetIp.startIp = orgIp.startIp;
         targetIp.endIp = orgIp.endIp;
     }
 
-    drawTable(ips: IpOperation): string {
+    drawTable(ips: IpOperation, editIndex: number = -1): string {
         console.log(this.ipList.length);
         let tableStr: string = '';
         tableStr += '<table class="table table-bordered"><tr><td>Name</td><td>Start IP</td><td>End IP</td><td></td></tr>';
         for (let i in this.ipList) {
-            //let thisIpName = 'thisIpName' + i;
-            //let thisStartIp = 'thisStartIp' + i;
-            //let thisEndIp = 'thisEndIp' + i;
-            console.log("This is ip list" + i);
             tableStr += '<tr>';
-            tableStr += '<td>' + this.ipList[i].name + '</td>';
-            tableStr += '<td>' + this.ipList[i].startIp + '</td>';
-            tableStr += '<td>' + this.ipList[i].endIp + '</td>';
-            tableStr += '<td class="col-md-2"><input type="button" class="btn btn-sm btn-primary" value="Edit" />&nbsp';
-            tableStr += '<input type="button" class="btn btn-sm btn-primary" id="btnDel' + i + '" value= "Delete" /></td>';
+            if (parseInt(i) == editIndex) {
+                tableStr += '<td><input class="form-control" id="ipName' + i + '" value="' + this.ipList[i].name + '" required /></td>';
+                tableStr += '<td><input class="form-control" id="startIp' + i + '" value="' + this.ipList[i].startIp + '" required /></td>';
+                tableStr += '<td><input class="form-control" id="endIp' + i + '" value="' + this.ipList[i].endIp + '" required /></td>';
+                tableStr += '<td class="col-md-2"><input type="button" class="btn btn-sm btn-primary" id="btnSave' + i + '" value="save" />&nbsp';
+                tableStr += '<input type="button" class="btn btn-sm btn-primary" id="btnCancel" value= "cancel" /></td>';
+            }
+            else {
+                tableStr += '<td>' + this.ipList[i].name + '</td>';
+                tableStr += '<td>' + this.ipList[i].startIp + '</td>';
+                tableStr += '<td>' + this.ipList[i].endIp + '</td>';
+                tableStr += '<td class="col-md-2"><input type="button" class="btn btn-sm btn-primary" id="btnEdit' + i + '" value="Edit" />&nbsp';
+                tableStr += '<input type="button" class="btn btn-sm btn-primary" id="btnDel' + i + '" value= "Delete" /></td>';
+            }
             tableStr += '</tr>';
         }
+        //Add input box for enter new ip address
+        tableStr += '<tr>';
+        tableStr += '<td><input class="form-control" id="ipName" name="ipName" required /></td>';
+        tableStr += '<td><input class="form-control" id="startIp" name="startIp" required /></td>';
+        tableStr += '<td><input class="form-control" id="endIp" name="endIp" required /></td>';
+        tableStr += '<td class="col-md-2"><input type="button" class="btn btn-sm btn-primary" value="Save" id="saveIp" name="saveIp" />&nbsp';
+        tableStr += '</tr>';
         tableStr += '</table>';
         console.log(tableStr);
         this.ipHtml.html(tableStr);
@@ -88,11 +103,25 @@ export class IpOperation {
             $('#btnDel' + i).on('click', function () {
                 ips.removeAndDraw(parseInt(i));
             });
+
+            $('#btnEdit' + i).on('click', function () {
+                ips.drawTable(ips, parseInt(i));
+            });
         }
+
+        //Add save button click function
+        $('#saveIp').on('click', function () {
+            ips.addAndDraw(new IpAddress($('#ipName').val(), $('#startIp').val(), $('#endIp').val()));
+        });
+
+        $('#btnSave' + editIndex).on('click', function () {
+            ips.editAndDraw(editIndex, new IpAddress($('#ipName' + editIndex).val(), $('#startIp' + editIndex).val(), $('#endIp' + editIndex).val()));
+        });
+
+        $('#btnCancel').on('click', function () {
+            ips.drawTable(ips);
+        });
+
         return tableStr;
     }
-}
-
-export function deleteIp(ipo: IpOperation, deleteIndex: number) {
-    ipo.removeAndDraw(deleteIndex);
 }
