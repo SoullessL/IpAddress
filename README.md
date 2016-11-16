@@ -1,5 +1,8 @@
-# IpAddress
+## IpAddress
 Ip Address plugin
+
+## Effect:
+    ![image](https://github.com/SoullessL/IpAddress/blob/master/IpAddressTS/gif/demo.gif)
 
 ##How to use:
 ###1.Add jquery, bootstrap and requirejs link.
